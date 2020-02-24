@@ -108,3 +108,75 @@ BLAKE            2850          5
 
 * Usually, a rowid value uniquely identifies a row in the database. However, rows in different tables taht are stored together in the same cluster can have the same rowid.
 
+### ROWID values have several important uses:
+
+* They are fastest way to access a single row.
+* They can show you how the rows in a table are stored.
+* They are unique identifiers for rows ina table.
+* You should not use ROWID as the primary key of a table. If you delete and reinsert a row with the import and export utilities, for example, then its rowid may change. If you delete a row, then oracle may reassign its rowid to a new row inserted later.
+* You can use the ROWID pseudo column in the SELECT and WHERE clause of a query, these pseudo column values are not actually stored in the database.
+* You cannot insert,update or delet a value of the ROWID pseudo column.
+
+### Advantage of rowid:
+* A rowid is a pseudo column(like version_xid), that uniquely identifies a row within a table, but not within a database.
+* It is possible for to rows of two different tables stored in the same cluster to have the same rowid.
+Example This statement selects the adddress of all orws that contain data for employees in departement 20.
+
+SQL> SELECT ROWID,ename FROM emp WHERE deptno=20;
+
+ROWID              ENAME
+------------------ ----------
+AAAR3sAAEAAAACXAAA SMITH
+AAAR3sAAEAAAACXAAD JONES
+AAAR3sAAEAAAACXAAH SCOTT
+AAAR3sAAEAAAACXAAK ADAMS
+AAAR3sAAEAAAACXAAM FORD
+
+SQL> SELECT ename,sal,job FROM emp WHERE rowid = 'AAAR3sAAEAAAACXAAA';
+
+ENAME             SAL JOB
+---------- ---------- ---------
+SMITH             800 CLERK
+
+SQL> SELECT ename,sal,job FROM emp WHERE rowid < 'AAAR3sAAEAAAACXAAA';
+
+no rows selected
+
+SQL> SELECT max(rowid) FROM emp;
+
+MAX(ROWID)
+------------------
+AAAR3sAAEAAAACXAAN
+
+SQL> SELECT min(rowid) FROM emp;
+
+MIN(ROWID)
+------------------
+AAAR3sAAEAAAACXAAA
+
+SQL> SELECT * FROM emp p WHERE rowid<(SELECT max(rowid) from emp s WHERE p.ename=s.ename);
+
+no rows selected
+
+##### NOTE:
+* Duplicate ename's is there that only display the above statement.
+
+SQL> DELETE FROM emp p WHERE rowid<(SELECT max(rowid) from emp s WHERE p.ename=s.ename);
+
+### Frequently Asked Questions:
+
+* How many columns can table have?
+The number of columns in a table can range from 1 to 1000.
+
+* Deleting Duplicate rows in the table?
+We can delet the duplicate rows in the table by using ROWID.
+
+* What is ROWID? In a session before accesing next value?
+ROWID is a pseudo column attached to each row of a table. It is 18 caharcter long, blockno, rownumber are the components of RWOID.
+
+
+
+
+
+
+
