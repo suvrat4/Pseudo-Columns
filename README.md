@@ -87,3 +87,24 @@ SMITH
 
 ###### Examples:
 
+SQL> SELECT ename,sal,rownum FROM (SELECT rownum,ename,sal FROM emp ORDER BY sal desc) WHERE rownum<=5;
+
+ENAME             SAL     ROWNUM
+---------- ---------- ----------
+KING             5000          1
+SCOTT            3000          2
+FORD             3000          3
+JONES            2975          4
+BLAKE            2850          5
+
+### ROWID Pseudo column:
+
+* For each row in the database, the ROWID pseudocolumn returns the address of the row.
+* Oracle Database rowid values contain information necessary to locate a row.
+1. The object number of the object.
+2. The data block in the data file in which the row resides.
+3. The positon of the row in the data block(first row is 0).
+4. The datafile in which the row resides(first file is 1).
+
+* Usually, a rowid value uniquely identifies a row in the database. However, rows in different tables taht are stored together in the same cluster can have the same rowid.
+
