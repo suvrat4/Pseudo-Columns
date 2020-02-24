@@ -1,4 +1,4 @@
-#Pseudo Columns
+# Pseudo Columns
 
 * A Pseudo column behave likes a table column, but is not actually stoed in the table. You can select from the pseudo columns, but you cannot
 insert,update or delete their values.
