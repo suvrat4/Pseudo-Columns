@@ -174,6 +174,71 @@ We can delet the duplicate rows in the table by using ROWID.
 * What is ROWID? In a session before accesing next value?
 ROWID is a pseudo column attached to each row of a table. It is 18 caharcter long, blockno, rownumber are the components of RWOID.
 
+* Display the record between two range? using rownum
+
+SQL> SELECT rownum,empno,ename FROM emp WHERE rowid in
+  2  (
+  3  SELECT rowid FROM emp WHERE rownum<=&upto
+  4  MINUS
+  5  SELECT rowid from emp WHERE rownum<&start
+  6  );
+Enter value for upto: 10
+old   3: SELECT rowid FROM emp WHERE rownum<=&upto
+new   3: SELECT rowid FROM emp WHERE rownum<=10
+Enter value for start: 5
+old   5: SELECT rowid from emp WHERE rownum<&start
+new   5: SELECT rowid from emp WHERE rownum<5
+
+    ROWNUM      EMPNO ENAME
+---------- ---------- ----------
+         1       7654 MARTIN
+         2       7698 BLAKE
+         3       7782 CLARK
+         4       7788 SCOTT
+         5       7839 KING
+         6       7844 TURNER
+
+6 rows selected.
+
+* Display Odd/Even number of records?
+
+===========ODD RECORDS================
+SQL> SELECT empno,ename FROM emp WHERE (rowid,1) in ( SELECT rowid, mod(rownum,2) FROM emp);
+
+     EMPNO ENAME
+---------- ----------
+      7369 SMITH
+      7521 WARD
+      7654 MARTIN
+      7782 CLARK
+      7839 KING
+      7876 ADAMS
+      7902 FORD
+
+7 rows selected.
+
+===========EVEN RECORDS===============
+
+SQL> SELECT empno,ename FROM emp WHERE (rowid,1) in ( SELECT rowid, mod(rownum,2) FROM emp);
+
+     EMPNO ENAME
+---------- ----------
+      7369 SMITH
+      7521 WARD
+      7654 MARTIN
+      7782 CLARK
+      7839 KING
+      7876 ADAMS
+      7902 FORD
+
+7 rows selected.
+
+* How many rows will following SQL return?
+
+SELECT * FROM emp where rownum = 10;
+
+Answer: No rows.
+
 
 
 
